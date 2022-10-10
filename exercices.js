@@ -5,12 +5,12 @@ function add(a, b) {
   return a + b;
 }
 
-// Presque pure car utilise une librairie externe
+// Pure
 function toUpperCase(str) {
   return str.toUpperCase();
 }
-!
-// La version 100% pure serait
+
+// Extremement pure (sert a rien)
 function toUpperCasePure(str) {
   // Array with alphabet
   let upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ""]
