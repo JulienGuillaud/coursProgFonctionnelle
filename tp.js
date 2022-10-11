@@ -176,5 +176,4 @@ function main(){
 }
 
 const fs = require('fs');
-const { Console } = require('console');
 main()
