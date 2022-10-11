@@ -12,7 +12,6 @@ function sortByKey(arr){
    return sorted
 }
 
-
 /* STR RELATED OPERATIONS */
 function strToWordArray(str){
    return str.split(' ')
@@ -58,7 +57,7 @@ function noUpperCase(_removeUpperCase, str){
 function firstAndLastLetterUppercase(str){
    return str
       .split(" ")
-      .map((e) => (e[0].toUpperCase()+e.slice(1, -1)+e[e.length-1].toUpperCase()))
+      .map((e) => (!!e && e.charAt(0).toUpperCase()+e.slice(1, -1)+e[e.length-1].toUpperCase()))
       .join(" ")
       .replaceAll(/e|E/g, "")
 }
@@ -88,12 +87,50 @@ function readFile(file, callback) {
    })
 }
 
-function addLine(file, lineText){
-   fs.appendFile(file, "\n"+lineText, function (err) {
-      if (err) throw err;
-      console.log('Line saved !');
-   });
+
+class NewLine {
+   constructor(lineValue){
+      this.newLine = (!!lineValue) ? lineValue : ""
+   }
+
+   getText(){
+      return this.newLine
+   }
+
+   setTextToLine(text){
+      this.newLine = text
+   }
+
+   addTextToLine(text){
+      this.newLine += text
+   }
+
+   toLowerCase(){
+      this.newLine = noUpperCase(false, this.newLine)
+   }
+
+   removeUpperCase(){
+      this.newLine = noUpperCase(true, this.newLine)
+   }
+
+   firstAndLastLetterUpper(){
+      this.newLine = firstAndLastLetterUppercase(this.newLine)
+   }
+
+   save(file){
+      fs.appendFile(file, "\n"+this.newLine, function (err) {
+         if (err) throw err;
+         console.log('Line saved !');
+      });
+   }
 }
+
+// function addLine(file, lineText){
+//    fs.appendFile(file, "\n"+lineText, function (err) {
+//       if (err) throw err;
+//       console.log('Line saved !');
+//    });
+// }
 
 function tpReadInfos(data) {
    // console.log(data)
@@ -106,7 +143,7 @@ function tpReadInfos(data) {
    let word5char = countWordWithChars(5, data)
    let onProtoWithNChars = data.countWordWithChars(5)
    let firstAndLastUpper = firstAndLastLetterUppercase(data)
-   
+
    console.log("Compteur caractères : ",sortedCharCount)
    console.log("Start with 't' : "+startWithT)
    console.log("onProto start with 't' : "+onProtoStartWith)
@@ -115,21 +152,27 @@ function tpReadInfos(data) {
    console.log("\nNo upperCase :\n"+noUpperCaseData)
    console.log("\nlowercase :\n"+lowerCaseData)
    console.log("\nfirstAndLastUpper :\n"+firstAndLastUpper)
-
 }
 
+function tpWriteFile(){
+   let newLine = new NewLine("Bonjour TEST nouvelle ligne")
+   newLine.addTextToLine(" encore du texte sur la nouvelle ligne")
+   newLine.toLowerCase()
+   newLine.firstAndLastLetterUpper()
+   newLine.removeUpperCase()
+   newLine.save("./texte.txt")
 
+   // addLine("./texte.txt", "Bonjour TEST Majuscules, coucou")
+   console.log("File after : ")
+   printFile("./texte.txt")
+}
 
 function main(){
+
+   tpWriteFile()
+
    readFile("./texte.txt", tpReadInfos)
    readFile("./texte_vide.txt", tpReadInfos)
-
-   // console.log("File before : ")
-   // printFile("./texte.txt")
-   // addLine("./texte.txt", "Bonjour TEST Majuscules, coucou")
-   // console.log("File after : ")
-   // printFile("./texte.txt")
-
 }
 
 const fs = require('fs');
